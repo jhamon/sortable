@@ -3,11 +3,8 @@ module Sortable
     def merge(left, right)
       merged = []
       until left.empty? or right.empty?
-        if left.first < right.first
-          merged << left.shift
-        else
-          merged << right.shift
-        end
+        merged <<
+         ((left.first < right.first) ? left.shift : right.shift)
       end
       merged + left + right
     end
