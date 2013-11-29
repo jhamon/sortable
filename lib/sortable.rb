@@ -20,4 +20,8 @@ module Sortable
     right = arr.drop(middle)
     merge(mergesort(left), mergesort(right))
   end
+
+  def mergesort!
+    replace(mergesort)
+  end
 end
