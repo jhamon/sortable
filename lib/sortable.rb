@@ -14,8 +14,7 @@ module Sortable
     return arr if arr.length < 2
 
     middle = arr.length / 2
-    left = arr.take(middle)
-    right = arr.drop(middle)
+    left, right = arr.take(middle), arr.drop(middle)
     merge(mergesort(left), mergesort(right))
   end
 
@@ -43,7 +42,8 @@ module Sortable
 
     each_with_index do |pivot, pivot_idx|
       (0...pivot_idx).reverse_each do |compare_idx|
-        if (pivot <= arr[compare_idx]) && ((compare_idx == 0) || (pivot >= arr[compare_idx - 1]))
+        if (pivot <= arr[compare_idx]) && 
+          ((compare_idx == 0) || (pivot >= arr[compare_idx - 1]))
           arr.insert(compare_idx, pivot) 
           arr.delete_at(pivot_idx+1)
           break
