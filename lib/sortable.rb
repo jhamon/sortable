@@ -1,4 +1,14 @@
 module Sortable
+  def self.define_bang_methods(*methods)
+    methods.each do |method|
+      define_method("#{method}!") do
+        replace(send(method))
+      end
+    end
+  end
+
+  define_bang_methods :mergesort, :bubblesort
+
   def mergesort(arr=nil)
     arr = self.dup if arr.nil?
     return arr if arr.length < 2
