@@ -12,38 +12,6 @@ module Sortable
                       :insertion_sort,
                       :quicksort
 
-  def quicksort(arr=nil)
-    def split(array, value)
-      left, equal, right = [], [], []
-      array.each do |element|
-        if element == value
-          equal << element
-        else
-          reciever = (element < value ? left : right)
-          reciever << element
-        end
-      end
-
-      [left, equal, right]
-    end
-
-    arr = self.dup if arr.nil?
-    return arr if arr.length < 2
-
-    pivot = arr[arr.length / 2]
-    left, equal, right = split(arr, pivot)
-    quicksort(left) + equal + quicksort(right) 
-  end
-
-  def mergesort(arr=nil)
-    arr = self.dup if arr.nil?
-    return arr if arr.length < 2
-
-    middle = arr.length / 2
-    left, right = arr.take(middle), arr.drop(middle)
-    merge(mergesort(left), mergesort(right))
-  end
-
   def bubblesort
     arr = self.dup
     swap_made = true
@@ -78,6 +46,38 @@ module Sortable
     end
 
     arr
+  end
+
+  def mergesort(arr=nil)
+    arr = self.dup if arr.nil?
+    return arr if arr.length < 2
+
+    middle = arr.length / 2
+    left, right = arr.take(middle), arr.drop(middle)
+    merge(mergesort(left), mergesort(right))
+  end
+
+  def quicksort(arr=nil)
+    def split(array, value)
+      left, equal, right = [], [], []
+      array.each do |element|
+        if element == value
+          equal << element
+        else
+          reciever = (element < value ? left : right)
+          reciever << element
+        end
+      end
+
+      [left, equal, right]
+    end
+
+    arr = self.dup if arr.nil?
+    return arr if arr.length < 2
+
+    pivot = arr[arr.length / 2]
+    left, equal, right = split(arr, pivot)
+    quicksort(left) + equal + quicksort(right) 
   end
 
   private
