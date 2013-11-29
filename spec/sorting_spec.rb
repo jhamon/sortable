@@ -14,6 +14,15 @@ describe "Sorting algorithms" do
 
   Sortable.instance_methods(false).each do |sort_method|
     describe "##{sort_method}" do
+
+      if sort_method.to_s[-1] == "!"
+        it "mutates the array" do
+          initial_obj_id = shuffled_array.object_id
+          result = shuffled_array.send(sort_method)
+          expect(result.object_id).to eq(initial_obj_id)
+        end
+      end
+
       it "handles an empty array" do
         expect(empty_array.send(sort_method)).to eq([])
       end
