@@ -1,4 +1,5 @@
-## Sortable
+## Sortable [![Build Status](https://travis-ci.org/jhamon/sortable.png)](https://travis-ci.org/jhamon/sortable)
+
 
 Sortable is a small module containing several common sorting methods.  I mostly
 wrote it as a way to learn about sorting algorithms, but if you want to use it
