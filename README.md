@@ -4,17 +4,20 @@ Sortable is a small module containing several common sorting methods.  I mostly
 wrote it as a way to learn about sorting algorithms, but if you want to use it
 simple reopen the `Array` class and include the module.
 
-    require 'sortable.rb'
+``` ruby
+require 'sortable.rb'
 
-    class Array
-      include Sortable
-    end
+class Array
+  include Sortable
+end
+```
 
 
 So far, I have completed the following methods:
  - `bubblesort`
  - `insertion_sort`
  - `mergesort`
+ - `quicksort`
 
 
 ## References:
