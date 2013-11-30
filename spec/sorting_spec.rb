@@ -59,6 +59,11 @@ describe "Sorting algorithms" do
       it "handles a large random array" do
         expect(big_random_array.send(sort_method)).to eq(big_random_array.sort)
       end
+
+      it "accepts an optional block" do
+        sort_proc = Proc.new { |el1, el2| el2 <=> el1 }
+        expect(shuffled_array.send(sort_method, &sort_proc)).to eq(shuffled_array.sort.reverse)
+      end
     end
   end
 end
