@@ -32,13 +32,18 @@ module Sortable
     arr
   end
 
-  def insertion_sort
+  def insertion_sort(&blk)
+    blk ||= Proc.new { |pivot_val, compare_val| pivot_val <=> compare_val }
     arr = self.dup
+
+    def swap_needed_at_index?(index, pivot, arr, blk)
+        return (blk.call(pivot, arr[index]) != 1) &&
+          (index == 0 || blk.call(pivot, arr[index - 1]) != -1) 
+    end
 
     each_with_index do |pivot, pivot_idx|
       (0...pivot_idx).reverse_each do |compare_idx|
-        if (pivot <= arr[compare_idx]) && 
-          ((compare_idx == 0) || (pivot >= arr[compare_idx - 1]))
+        if swap_needed_at_index?(compare_idx, pivot, arr, blk)
           arr.insert(compare_idx, pivot) 
           arr.delete_at(pivot_idx+1)
           break
@@ -98,5 +103,4 @@ module Sortable
 
       merged + left + right
     end
-
 end
