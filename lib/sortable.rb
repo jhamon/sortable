@@ -1,8 +1,8 @@
 module Sortable
   def self.define_bang_methods(*methods)
     methods.each do |method|
-      define_method("#{method}!") do
-        replace(send(method))
+      define_method("#{method}!") do |&blk|
+        replace(send(method, &blk))
       end
     end
   end
@@ -12,8 +12,9 @@ module Sortable
                       :insertion_sort,
                       :quicksort
 
-  def bubblesort
+  def bubblesort(&blk)
     arr = self.dup
+    blk ||= Proc.new { |el1, el2| el1 <=> el2 }
     swap_made = true
     last_index = length - 1
     until swap_made == false
@@ -21,7 +22,7 @@ module Sortable
 
       each_index do |idx|
         next if idx == last_index
-        if arr[idx] > arr[idx+1]
+        if blk.call(arr[idx], arr[idx+1]) == 1
           arr[idx], arr[idx+1] = arr[idx+1], arr[idx]
           swap_made = true
         end
@@ -48,13 +49,14 @@ module Sortable
     arr
   end
 
-  def mergesort(arr=nil)
+  def mergesort(arr=nil, &blk)
+    blk ||= Proc.new { |el1, el2| el1 <=> el2 }
     arr = self.dup if arr.nil?
     return arr if arr.length < 2
 
     middle = arr.length / 2
     left, right = arr.take(middle), arr.drop(middle)
-    merge(mergesort(left), mergesort(right))
+    merge(mergesort(left, &blk), mergesort(right, &blk), blk)
   end
 
   def quicksort(arr=nil)
@@ -81,12 +83,12 @@ module Sortable
   end
 
   private
-    def merge(left, right)
+    def merge(left, right, blk)
       merged = []
 
       until left.empty? or right.empty?
         merged <<
-         ((left.first < right.first) ? left.shift : right.shift)
+         ((blk.call(left.first, right.first)) == 1 ? right.shift : left.shift)
       end
 
       merged + left + right
