@@ -13,8 +13,8 @@ module Sortable
                       :quicksort
 
   def bubblesort(&blk)
-    arr = self.dup
     blk ||= Proc.new { |el1, el2| el1 <=> el2 }
+    arr = self.dup
     swap_made = true
     last_index = length - 1
     until swap_made == false
@@ -51,6 +51,7 @@ module Sortable
 
   def mergesort(arr=nil, &blk)
     blk ||= Proc.new { |el1, el2| el1 <=> el2 }
+
     arr = self.dup if arr.nil?
     return arr if arr.length < 2
 
@@ -59,15 +60,19 @@ module Sortable
     merge(mergesort(left, &blk), mergesort(right, &blk), blk)
   end
 
-  def quicksort(arr=nil)
-    def split(array, value)
+  def quicksort(arr=nil, &blk)
+    blk ||= Proc.new { |pivot, element| pivot <=> element }
+
+    def split(array, pivot, blk)
       left, equal, right = [], [], []
       array.each do |element|
-        if element == value
+        case blk.call(pivot, element)
+        when 0
           equal << element
-        else
-          reciever = (element < value ? left : right)
-          reciever << element
+        when 1
+          left << element
+        when -1
+          right << element
         end
       end
 
@@ -78,8 +83,8 @@ module Sortable
     return arr if arr.length < 2
 
     pivot = arr[arr.length / 2]
-    left, equal, right = split(arr, pivot)
-    quicksort(left) + equal + quicksort(right) 
+    left, equal, right = split(arr, pivot, blk)
+    quicksort(left, &blk) + equal + quicksort(right, &blk) 
   end
 
   private
