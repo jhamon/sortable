@@ -1,4 +1,5 @@
 require 'rspec'
+require 'spec_helper.rb'
 require 'sortable.rb'
 
 class Array
@@ -14,6 +15,7 @@ describe "Sorting algorithms" do
   let(:array_with_duplicates) { [2, 4, 2, 2, 4, 0, -1] }
   let(:sorted_array) { [-2, 0, 2, 4, 6, 8, 10] }
   let(:reversed_array) { [0, 1, 2, 3, 4, 5].reverse }
+  let(:big_random_array) { random_array(1000) } 
 
   Sortable.instance_methods(false).each do |sort_method|
     describe "##{sort_method}" do
@@ -52,6 +54,10 @@ describe "Sorting algorithms" do
 
       it "handles a reversed array" do
         expect(reversed_array.send(sort_method)).to eq(reversed_array.sort)
+      end
+
+      it "handles a large random array" do
+        expect(big_random_array.send(sort_method)).to eq(big_random_array.sort)
       end
     end
   end
